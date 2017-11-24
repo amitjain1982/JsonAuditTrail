@@ -2,7 +2,7 @@ var AuditLog = function(params){
     var defaultOptions = {
       pathSeparator : ".",
       arrayIndicator: ["[", "]"],
-      excludeProperties : ['internalRowId'],
+      excludeProperties : [],
       deletedProperty:"deleted"
     };
 
@@ -61,7 +61,7 @@ var AuditLog = function(params){
         return ! _.contains(options.excludeProperties, property);
     };
 
-    var getAuditLog = function(oldObj, newObj){
+    var generateLogTrail = function(oldObj, newObj){
         oldObj = JSON.parse(oldObj);
         newObj = JSON.parse(newObj);
         var diffJson = JSON.parse(changeset.calculateDiff(oldObj, newObj));
@@ -69,5 +69,5 @@ var AuditLog = function(params){
         generateLogs(diffJson,"", allLogs);
         return allLogs;
     };
-    return { getAuditLog:getAuditLog};
+    return { generateLogTrail:generateLogTrail};
 }();
