@@ -17,25 +17,24 @@ var AuditLog = function(params){
 
     var buildLog = function(jsonObj, path, allLogs){
         if(hasChangesProp(jsonObj)){
-            path = setPath(jsonObj,path);
+            path = addKeyToPath(jsonObj,path) + options.pathSeparator;
             generateLogs(jsonObj.changes, path, allLogs);
         } else if(jsonObj){
-            if(isAuditLog(jsonObj) && eligibleForAuditLog(jsonObj.key)){
-                if(jsonObj.key == options.deletedProperty){
-                    jsonObj.type = "deleted";
+            if(eligibleForAuditLog(jsonObj.key)){
+                if(jsonObj.key == options.deletedProperty || _.isUndefined(jsonObj.type)){
+                    jsonObj.type = "Deleted";
                 }
-                jsonObj.key = path + jsonObj.key;
+                jsonObj.key = addKeyToPath(jsonObj,path);
                 allLogs.push(jsonObj);
             }
         }
     };
 
-    var setPath = function(jsonObj, path){
+    var addKeyToPath = function(jsonObj, path){
         if(_.isNaN(parseInt(jsonObj.key))) path += jsonObj.key;
         else {
             path = arrayIdentifier(jsonObj.key, path);
         }
-        path += options.pathSeparator;
         return path;
     };
 
@@ -51,10 +50,6 @@ var AuditLog = function(params){
 
     var hasChangesProp = function(obj){
         return  obj.hasOwnProperty("changes");
-    };
-
-    var isAuditLog = function(obj){
-        return  obj.hasOwnProperty("type");
     };
 
     var eligibleForAuditLog = function(property){
