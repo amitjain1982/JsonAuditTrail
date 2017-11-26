@@ -21,8 +21,8 @@ var AuditLog = function(params){
             generateLogs(jsonObj.changes, path, allLogs);
         } else if(jsonObj){
             if(eligibleForAuditLog(jsonObj.key)){
-                if(jsonObj.key == options.deletedProperty || _.isUndefined(jsonObj.type)){
-                    jsonObj.type = "Deleted";
+                if(jsonObj.key == options.deletedProperty){
+                    jsonObj.type = "Remove";
                 }
                 jsonObj.key = addKeyToPath(jsonObj,path);
                 allLogs.push(jsonObj);

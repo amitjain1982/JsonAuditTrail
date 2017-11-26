@@ -321,7 +321,7 @@
         changeset.op = {
             ADD: 'Add',
             UPDATE: 'Update',
-            DELETE:'Delete'
+            REMOVE:'Remove'
         };
 
         changeset.calculateDiff= function(oldObj, newObj){
